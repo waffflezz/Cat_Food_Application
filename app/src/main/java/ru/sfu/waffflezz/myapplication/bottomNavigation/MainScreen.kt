@@ -1,14 +1,32 @@
 package ru.sfu.waffflezz.myapplication.bottomNavigation
 
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import ru.sfu.waffflezz.myapplication.R
 import ru.sfu.waffflezz.myapplication.data.entities.CardEntity
 import ru.sfu.waffflezz.myapplication.viewmodels.CartViewModel
 import ru.sfu.waffflezz.myapplication.viewmodels.MapViewModel
@@ -20,7 +38,6 @@ fun MainScreen(
     cartViewModel: CartViewModel = viewModel(factory = CartViewModel.factory),
     mapViewModel: MapViewModel = viewModel(factory = MapViewModel.factory)
 ) {
-
     LaunchedEffect(key1 = true) {
         cartViewModel.insertCard(
             CardEntity(
@@ -64,15 +81,36 @@ fun MainScreen(
         )
     }
 
+    val title by cartViewModel.title.collectAsState()
+    val titleIcon by cartViewModel.titleIcon.collectAsState()
+
     val navController = rememberNavController()
     Scaffold (
         topBar = {
             TopAppBar(
                 colors = topAppBarColors(
-                    containerColor = Color.White,
-                    titleContentColor = Color.White
+                    containerColor = Color.White
                 ),
                 title = {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                    ) {
+                        Icon(
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+                                .padding(end = 10.dp),
+                            painter = painterResource(id = titleIcon),
+                            contentDescription = "",
+                            tint = colorResource(id = R.color.bold_pink)
+                        )
+                        Text(
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically),
+                            text = title,
+                            color = colorResource(id = R.color.bold_pink)
+                        )
+                    }
                 },
             )
         },

@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
@@ -40,21 +41,11 @@ fun CartCard(
     cartEntity: CartEntity,
     cartViewModel: CartViewModel
 ) {
-    val quantity = remember { mutableIntStateOf(1) }
+    val quantity = remember { mutableIntStateOf(cartEntity.quantity) }
     var cardEntity by remember { mutableStateOf<CardEntity?>(null) }
 
-    val quantityFlow = cartViewModel.getQuantity(cartEntity.id!!)
-    LaunchedEffect(quantityFlow) {
-        quantityFlow.collect {
-            Log.d("DEBUGGG", it.toString())
-            quantity.intValue = it!!
-        }
-    }
-
-    LaunchedEffect(key1 = quantity.intValue) {
-        if (quantity.intValue != 0) {
-            cartViewModel.updateCartItemQuantity(cartEntity.id!!, quantity.intValue)
-        }
+    LaunchedEffect(key1 = cartEntity) {
+        Log.d("DEBUG_CART", cartEntity.toString())
     }
 
     LaunchedEffect(key1 = true) {
@@ -87,9 +78,10 @@ fun CartCard(
             ) {
                 Text(
                     text = it.name,
-                    fontSize = 3.em
+                    fontSize = 3.em,
+                    color = colorResource(id = R.color.bold_pink)
                 )
-                Text(text = "${it.price} ₽")
+                Text(text = "${it.price} ₽", color = colorResource(id = R.color.bold_pink))
             }
             Row(
                 modifier = Modifier
@@ -103,24 +95,21 @@ fun CartCard(
                         .align(Alignment.CenterVertically)
                 ) {
                     IconButton(onClick = {
-                        cartViewModel.updateQuantity(
-                            CartEntity(cartEntity.id, cartEntity.cardId, ++quantity.intValue)
-                        )
+                        cartViewModel.updateCartItemQuantity(cartEntity.id!!, ++quantity.intValue)
                     }) {
                         Icon(painter = painterResource(id = R.drawable.plus), contentDescription = "plus")
                     }
                     Text(
                         modifier = Modifier
                             .align(Alignment.CenterVertically),
-                        text = quantity.intValue.toString()
+                        text = quantity.intValue.toString(),
+                        color = colorResource(id = R.color.bold_pink)
                     )
                     IconButton(onClick = {
                         if (--quantity.intValue == 0) {
                             cartViewModel.deleteCartItem(cartEntity.id!!)
-                            cartViewModel.updateQuantity(
-                                CartEntity(cartEntity.id, cartEntity.cardId, quantity.intValue)
-                            )
                         }
+                        cartViewModel.updateCartItemQuantity(cartEntity.id!!, quantity.intValue)
                     }) {
                         Icon(painter = painterResource(id = R.drawable.minus), contentDescription = "minus")
                     }

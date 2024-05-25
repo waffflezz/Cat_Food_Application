@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -41,8 +42,10 @@ fun CatFoodCard(
         modifier = Modifier
             .fillMaxWidth()
             .height(160.dp)
-            .clip(RoundedCornerShape(24.dp))
-            .background(colorResource(id = R.color.white_pink))
+            .clip(RoundedCornerShape(24.dp)),
+        colors = CardDefaults.cardColors(
+            containerColor = colorResource(id = R.color.white_pink)
+        )
     ) {
         Row(
             modifier = Modifier
@@ -57,11 +60,13 @@ fun CatFoodCard(
                         )
             ) {
                 Text(
-                    text = cardEntity.type
+                    text = cardEntity.type,
+                    color = colorResource(id = R.color.bold_pink)
                 )
                 Text(
                     text = cardEntity.name,
-                    fontSize = 4.em
+                    fontSize = 4.em,
+                    color = colorResource(id = R.color.bold_pink)
                 )
             }
 
@@ -84,6 +89,7 @@ fun CatFoodCard(
                             modifier = Modifier
                                 .size(30.dp),
                             painter = painterResource(id = R.drawable.plus),
+                            tint = colorResource(id = R.color.bold_pink),
                             contentDescription = "",
                         )
                     }

@@ -3,6 +3,7 @@ package ru.sfu.waffflezz.myapplication.bottomNavigation
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -17,7 +18,7 @@ fun NavGraph(
     navHostController: NavHostController,
     innerPadding: PaddingValues,
     cartViewModel: CartViewModel,
-    mapViewModel: MapViewModel
+    mapViewModel: MapViewModel,
 ) {
     NavHost(
         navController = navHostController,
@@ -39,7 +40,8 @@ fun NavGraph(
         composable(Routes.MapScreenRoute) {
             MapScreen(
                 navHostController,
-                mapViewModel
+                mapViewModel,
+                cartViewModel
             )
         }
         composable(Routes.HistoryScreenRoute) {

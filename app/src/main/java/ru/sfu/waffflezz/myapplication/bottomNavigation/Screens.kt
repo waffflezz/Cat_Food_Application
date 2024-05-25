@@ -51,6 +51,8 @@ fun HomeScreen(
     navController: NavController,
     cartViewModel: CartViewModel
 ) {
+    cartViewModel.changeTitleInfo("Главная", R.drawable.home)
+
     val allCards by cartViewModel.allCards.collectAsState()
     val catFact by cartViewModel.catFact.collectAsState()
 
@@ -62,10 +64,11 @@ fun HomeScreen(
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(40.dp)
+                .padding(30.dp)
                 .background(Color.White),
             text = catFact,
-            fontSize = 5.em
+            fontSize = 4.em,
+            color = colorResource(id = R.color.bold_pink)
         )
         Box(
             modifier = Modifier
@@ -91,6 +94,8 @@ fun CartScreen(
     navController: NavController,
     cartViewModel: CartViewModel
 ) {
+    cartViewModel.changeTitleInfo("Корзина", R.drawable.shopping_cart)
+
     val allCarts by cartViewModel.allCartItems.collectAsState()
 
     val totalPrice by cartViewModel.totalPrice.collectAsState()
@@ -100,14 +105,17 @@ fun CartScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
     ) {
         Text(
             modifier = Modifier
                 .padding(top = 10.dp, start = 10.dp),
-            text = "Ваш заказ:"
+            text = "Ваш заказ:",
+            color = colorResource(id = R.color.bold_pink)
         )
         LazyColumn(
-            modifier = Modifier,
+            modifier = Modifier
+                .fillMaxHeight(0.7f),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(allCarts) { cartItem ->
@@ -131,24 +139,24 @@ fun CartScreen(
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Промежуточный итог")
-                Text(text = String.format("%.2f", totalPrice))
+                Text(text = "Промежуточный итог", color = colorResource(id = R.color.bold_pink))
+                Text(text = String.format("%.2f", totalPrice), color = colorResource(id = R.color.bold_pink))
             }
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Доставка")
-                Text(text = "0")
+                Text(text = "Доставка", color = colorResource(id = R.color.bold_pink))
+                Text(text = "0", color = colorResource(id = R.color.bold_pink))
             }
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Упаковка")
-                Text(text = String.format("%.2f", totalPackagePrice))
+                Text(text = "Упаковка", color = colorResource(id = R.color.bold_pink))
+                Text(text = String.format("%.2f", totalPackagePrice), color = colorResource(id = R.color.bold_pink))
             }
             Divider(
                 modifier = Modifier
@@ -163,11 +171,13 @@ fun CartScreen(
             ) {
                 Text(
                     text = "Итого",
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(id = R.color.bold_pink)
                 )
                 Text(
                     text = String.format("%.2f", totalPriceWithPackage),
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = colorResource(id = R.color.bold_pink)
                 )
             }
 
@@ -187,8 +197,11 @@ fun CartScreen(
 @Composable
 fun MapScreen(
     navController: NavController,
-    mapViewModel: MapViewModel
+    mapViewModel: MapViewModel,
+    cartViewModel: CartViewModel
 ) {
+    cartViewModel.changeTitleInfo("Мы на карте", R.drawable.map)
+
     val markers by mapViewModel.markers.collectAsState()
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(56.0153, 92.8932), 12f)
@@ -212,6 +225,8 @@ fun HistoryScreen(
     navController: NavController,
     cartViewModel: CartViewModel
 ) {
+    cartViewModel.changeTitleInfo("История", R.drawable.history)
+
     val allOrders by cartViewModel.allOrders.collectAsState()
     
     Column(
@@ -239,6 +254,8 @@ fun ConfirmTheOrderScreen(
     navController: NavController,
     cartViewModel: CartViewModel
 ) {
+    cartViewModel.changeTitleInfo("Корзина", R.drawable.shopping_cart)
+
     val phone = remember { mutableStateOf("") }
     val name = remember { mutableStateOf("") }
     val comment = remember { mutableStateOf("") }
@@ -258,21 +275,21 @@ fun ConfirmTheOrderScreen(
                 modifier = rowsModifier,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Телефон:")
+                Text(text = "Телефон:", color = colorResource(id = R.color.bold_pink))
                 TextField(value = phone.value, onValueChange = {newText -> phone.value = newText})
             }
             Row(
                 modifier = rowsModifier,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Имя:")
+                Text(text = "Имя:", color = colorResource(id = R.color.bold_pink))
                 TextField(value = name.value, onValueChange = {newText -> name.value = newText})
             }
             Row(
                 modifier = rowsModifier,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(text = "Комментарий:")
+                Text(text = "Комментарий:", color = colorResource(id = R.color.bold_pink))
                 TextField(
                     value = comment.value,
                     onValueChange = {newText -> comment.value = newText},
@@ -303,6 +320,8 @@ fun HistoryEditScreen(
     cartViewModel: CartViewModel,
     navController: NavController
 ) {
+    cartViewModel.changeTitleInfo("Заказ $orderId", R.drawable.history)
+
     val orderEntity by cartViewModel.orderEntity.collectAsState()
     val orderCardsEntities by cartViewModel.orderCardsEntities.collectAsState()
 
@@ -328,7 +347,7 @@ fun HistoryEditScreen(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = "Комментарий:")
+                Text(text = "Комментарий:", color = colorResource(id = R.color.bold_pink))
                 TextField(value = comment.value, onValueChange = {newText -> comment.value = newText})
             }
         }

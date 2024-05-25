@@ -1,5 +1,6 @@
 package ru.sfu.waffflezz.myapplication.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import ru.sfu.waffflezz.myapplication.App
+import ru.sfu.waffflezz.myapplication.R
 import ru.sfu.waffflezz.myapplication.data.MyDatabase
 import ru.sfu.waffflezz.myapplication.data.Repository
 import ru.sfu.waffflezz.myapplication.data.api.RetrofitInstance
@@ -25,6 +27,17 @@ import ru.sfu.waffflezz.myapplication.data.entities.OrderEntity
 
 class CartViewModel(database: MyDatabase) : ViewModel() {
     private val repository: Repository
+
+    private val _title = MutableStateFlow("")
+    val title: StateFlow<String> = _title.asStateFlow()
+
+    private val _titleIcon = MutableStateFlow(R.drawable.home)
+    val titleIcon: StateFlow<Int> = _titleIcon.asStateFlow()
+
+    fun changeTitleInfo(title: String, icon: Int) {
+        _title.value = title
+        _titleIcon.value = icon
+    }
 
     private val _catFact = MutableStateFlow("")
     val catFact: StateFlow<String> = _catFact.asStateFlow()
